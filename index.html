@@ -1,0 +1,667 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aditya's Anime Portfolio</title>
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* === Global Styles === */
+        :root {
+            --primary: #6e8efb;
+            --secondary: #a777e3;
+            --dark: #2d3436;
+            --light: #f4f4f4;
+            --danger: #e74c3c;
+            --anime-pink: #fd79a8;
+            --anime-blue: #0984e3;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f9f9f9;
+            color: var(--dark);
+            line-height: 1.6;
+        }
+
+        /* === Login Page Styles === */
+        .login-page {
+            background: linear-gradient(135deg, var(--anime-blue), var(--anime-pink));
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .login-container {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+            width: 90%;
+            max-width: 350px;
+            text-align: center;
+            animation: fadeIn 0.5s;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .profile-pic {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid var(--anime-pink);
+            margin-bottom: 1rem;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .login-form input {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+
+        .login-form input:focus {
+            border-color: var(--anime-pink);
+            box-shadow: 0 0 0 3px rgba(253, 121, 168, 0.2);
+        }
+
+        .login-btn {
+            background: linear-gradient(to right, var(--anime-blue), var(--anime-pink));
+            color: white;
+            border: none;
+            padding: 12px;
+            width: 100%;
+            border-radius: 8px;
+            font-size: 1rem;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .login-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .hint {
+            color: #666;
+            font-size: 0.9rem;
+            margin-top: 1rem;
+        }
+
+        .error-message {
+            color: var(--danger);
+            margin-top: 1rem;
+            font-size: 0.9rem;
+        }
+
+        /* === Main Website Styles === */
+        .website-content {
+            display: none; /* Hidden until login */
+        }
+
+        header {
+            background: white;
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+            padding: 1rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: 2px solid var(--anime-pink);
+        }
+
+        .logo span {
+            font-weight: 700;
+            color: var(--dark);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 20px;
+            list-style: none;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--dark);
+            font-weight: 500;
+            transition: color 0.3s;
+            position: relative;
+        }
+
+        .nav-links a:hover {
+            color: var(--anime-pink);
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--anime-pink);
+            transition: width 0.3s;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .logout-btn {
+            background: var(--danger);
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .logout-btn:hover {
+            background: #c0392b;
+        }
+
+        /* Hero Section */
+        .hero {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            padding: 3rem 1rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .hero h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(to right, var(--anime-blue), var(--anime-pink));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .hero p {
+            font-size: 1.1rem;
+            color: #666;
+            max-width: 700px;
+            margin-bottom: 2rem;
+        }
+
+        .hero img {
+            max-width: 100%;
+            border-radius: 15px;
+            margin-top: 2rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            border: 3px solid white;
+        }
+
+        /* About Me Section */
+        .about-me {
+            background: white;
+            padding: 3rem 2rem;
+            margin: 2rem auto;
+            max-width: 1200px;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+        }
+
+        .about-me h2 {
+            text-align: center;
+            margin-bottom: 2rem;
+            color: var(--anime-blue);
+            font-size: 2rem;
+        }
+
+        .about-content {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 2rem;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .about-text {
+            flex: 1;
+            min-width: 300px;
+        }
+
+        .about-text p {
+            margin-bottom: 1.5rem;
+            font-size: 1.1rem;
+        }
+
+        .skills {
+            margin-top: 2rem;
+        }
+
+        .skill-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .skill-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(to right, var(--anime-blue), var(--anime-pink));
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 1rem;
+            font-size: 1.2rem;
+        }
+
+        /* Appreciation Section */
+        .appreciation {
+            background: white;
+            padding: 3rem 2rem;
+            margin: 2rem auto;
+            max-width: 1200px;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+        }
+
+        .appreciation h2 {
+            text-align: center;
+            margin-bottom: 2rem;
+            color: var(--anime-pink);
+            font-size: 2rem;
+        }
+
+        textarea {
+            width: 100%;
+            padding: 1rem;
+            margin: 1rem 0;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            resize: vertical;
+            min-height: 120px;
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+
+        textarea:focus {
+            border-color: var(--anime-pink);
+            box-shadow: 0 0 0 3px rgba(253, 121, 168, 0.2);
+            outline: none;
+        }
+
+        .submit-btn {
+            background: linear-gradient(to right, var(--anime-blue), var(--anime-pink));
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 8px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: transform 0.3s;
+            display: block;
+            margin: 1rem auto;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-3px);
+        }
+
+        #appreciationWall {
+            margin-top: 2rem;
+        }
+
+        .appreciation-card {
+            background: #f8f9fa;
+            padding: 1.5rem;
+            border-radius: 10px;
+            margin-bottom: 1rem;
+            border-left: 4px solid var(--anime-pink);
+        }
+
+        .appreciation-card p {
+            margin-bottom: 0.5rem;
+        }
+
+        .appreciation-date {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        /* Contact Section */
+        .contact {
+            background: white;
+            padding: 3rem 2rem;
+            margin: 2rem auto;
+            max-width: 1200px;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+        }
+
+        .contact h2 {
+            text-align: center;
+            margin-bottom: 2rem;
+            color: var(--anime-blue);
+            font-size: 2rem;
+        }
+
+        .contact form {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .contact input {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+        }
+
+        #contactStatus {
+            text-align: center;
+            margin-top: 1rem;
+            min-height: 20px;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 2rem;
+            background: var(--dark);
+            color: white;
+        }
+
+        .social-icons {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            margin: 1.5rem 0;
+        }
+
+        .social-icon {
+            color: white;
+            font-size: 1.5rem;
+            transition: transform 0.3s, color 0.3s;
+        }
+
+        .social-icon:hover {
+            color: var(--anime-pink);
+            transform: translateY(-5px);
+        }
+
+        /* Mobile Responsiveness */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none; /* Burger menu would go here */
+            }
+            
+            .hero h1 {
+                font-size: 2rem;
+            }
+            
+            .about-content {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Login Page -->
+    <div class="login-page" id="loginPage">
+        <div class="login-container">
+            <img = "imagesprofile-pic.jpg.jpg" alt="Aditya's Anime Pic" class="profile-pic" id="profilePic">
+            <h1>Welcome to My Anime World!</h1>
+            <form class="login-form" id="loginForm">
+                <input type="text" id="username" placeholder="Username" required>
+                <input type="password" id="password" placeholder="Password" required>
+                <button type="submit" class="login-btn">Enter My World <i class="fas fa-arrow-right"></i></button>
+            </form>
+            <!-- <p class="hint">Hint: Username starts with 'aditya'</p> -->
+            <div class="error-message" id="errorMessage"></div>
+        </div>  
+    </div>
+
+    <!-- Main Website (Hidden Initially) -->
+    <div class="website-content" id="websiteContent">
+        <header>
+            <nav>
+                <div class="logo">
+                    <img = "imagesprofile-pic.jpg.jpg" alt="Aditya" id="logoImg">
+                    <span>Aditya Prasad Padhi</span>
+                </div>
+                <ul class="nav-links">
+                    <li><a href="#home"><i class="fas fa-home"></i> Home</a></li>
+                    <li><a href="#about"><i class="fas fa-user"></i> About</a></li>
+                    <li><a href="#contact"><i class="fas fa-envelope"></i> Contact</a></li>
+                    <li><button class="logout-btn" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> Logout</button></li>
+                </ul>
+            </nav>
+        </header>
+
+        <main>
+            <!-- Hero Section -->
+            <section class="hero" id="home">
+                <h1>Aditya Prasad Padhi</h1>
+                <p>Frontend Developer | Anime Enthusiast | Web Technology Student</p>
+                <img ="imagesprofile-pic.jpg.jpg" type="image/jpg" alt="Anime Banner" id="heroImg">
+            </section>
+
+            <!-- About Me Section -->
+            <section class="about-me" id="about">
+                <h2><i class="fas fa-star"></i> About Me</h2>
+                <div class="about-content">
+                    <div class="about-text">
+                        <p>Hey there! I'm Aditya Prasad Padhi, a passionate frontend developer with a love for anime and creative design. I'm currently diving deep into web technologies to build beautiful, interactive experiences.</p>
+                        
+                        <p>When I'm not coding, you'll find me watching the latest anime series, drawing characters, or exploring new web design trends. I believe in combining aesthetics with functionality to create websites that users love.</p>
+                        
+                        <div class="skills">
+                            <h3><i class="fas fa-code"></i> My Skills</h3>
+                            <div class="skill-item">
+                                <div class="skill-icon">
+                                    <i class="fab fa-html5"></i>
+                                </div>
+                                <span>HTML5, CSS3, JavaScript</span>
+                            </div>
+                            <div class="skill-item">
+                                <div class="skill-icon">
+                                    <i class="fab fa-react"></i>
+                                </div>
+                                <span>React.js Basics</span>
+                            </div>
+                            <div class="skill-item">
+                                <div class="skill-icon">
+                                    <i class="fas fa-paint-brush"></i>
+                                </div>
+                                <span>UI/UX Design</span>
+                            </div>
+                            <div class="skill-item">
+                                <div class="skill-icon">
+                                    <i class="fas fa-mobile-alt"></i>
+                                </div>
+                                <span>Responsive Design</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Appreciation Section -->
+            <section class="appreciation">
+                <h2><i class="fas fa-heart"></i> Leave Your Appreciation</h2>
+                <textarea id="appreciationText" placeholder="Write something nice about my work..."></textarea>
+                <button class="submit-btn" id="submitAppreciation"><i class="fas fa-paper-plane"></i> Submit</button>
+                <div id="appreciationWall"></div>
+            </section>
+
+            <!-- Contact Section -->
+            <section class="contact" id="contact">
+                <h2><i class="fas fa-envelope"></i> Contact Me</h2>
+                <form id="contactForm">
+                    <input type="text" id="contactName" name="name" placeholder="Your Name" required>
+                    <input type="email" id="contactEmail" name="email" placeholder="Your Email" required>
+                    <textarea id="contactMessage" name="message" placeholder="Your Message" required></textarea>
+                    <button type="submit" class="submit-btn"><i class="fas fa-paper-plane"></i> Send Message</button>
+                </form>
+                <div id="contactStatus"></div>
+            </section>
+        </main>
+
+        <footer>
+            <div class="social-icons">
+                <a href="#" class="social-icon"><i class="fab fa-github"></i></a>
+                <a href="#" class="social-icon"><i class="fab fa-linkedin"></i></a>
+                <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
+                <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
+            </div>
+            <p>&copy; 2023 Aditya Prasad Padhi. All rights reserved.</p>
+            <p>Made with <i class="fas fa-heart" style="color: var(--anime-pink);"></i> and anime magic</p>
+        </footer>
+    </div>
+
+    <script>
+        // Login Functionality
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            
+            if (username.toLowerCase().startsWith('aditya') && password === 'aditya@123') {
+                // Hide login, show website
+                document.getElementById('loginPage').style.display = 'none';
+                document.getElementById('websiteContent').style.display = 'block';
+                
+                // Scroll to top
+                window.scrollTo(0, 0);
+            } else {
+                document.getElementById('errorMessage').textContent = 
+                    'Invalid! Username must start with "aditya" and password is "aditya@123"';
+            }
+        });
+
+        // Logout Functionality
+        document.getElementById('logoutBtn').addEventListener('click', function() {
+            document.getElementById('loginPage').style.display = 'flex';
+            document.getElementById('websiteContent').style.display = 'none';
+            document.getElementById('username').value = '';
+            document.getElementById('password').value = '';
+        });
+
+        // Appreciation Wall
+        document.getElementById('submitAppreciation').addEventListener('click', function() {
+            const message = document.getElementById('appreciationText').value.trim();
+            if (message !== '') {
+                const wall = document.getElementById('appreciationWall');
+                const newMessage = document.createElement('div');
+                newMessage.className = 'appreciation-card';
+                newMessage.innerHTML = `
+                    <p><i class="fas fa-quote-left"></i> ${message} <i class="fas fa-quote-right"></i></p>
+                    <p class="appreciation-date"><i class="far fa-clock"></i> ${new Date().toLocaleString()}</p>
+                `;
+                wall.prepend(newMessage);
+                document.getElementById('appreciationText').value = '';
+                
+                // Show confirmation
+                alert('✨ Thank you for your kind words! ✨');
+            } else {
+                alert('Please write something first!');
+            }
+        });
+
+        // Contact Form using FormSubmit
+        document.getElementById('contactForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const form = e.target;
+            const status = document.getElementById('contactStatus');
+            
+            // Change the form action to your FormSubmit email
+            form.action = 'https://formsubmit.co/padhyadityaprasad21@gmail.com'; // REPLACE WITH YOUR EMAIL
+            form.method = 'POST';
+            
+            // Add hidden fields for FormSubmit
+            const redirect = document.createElement('input');
+            redirect.type = 'hidden';
+            redirect.name = '_next';
+            redirect.value = window.location.href.split('#')[0] + '#contact';
+            form.appendChild(redirect);
+            
+            const subject = document.createElement('input');
+            subject.type = 'hidden';
+            subject.name = '_subject';
+            subject.value = 'New message from your portfolio';
+            form.appendChild(subject);
+            
+            // Optional: Add honeypot field to prevent spam
+            const honeyPot = document.createElement('input');
+            honeyPot.type = 'text';
+            honeyPot.name = '_honey';
+            honeyPot.style.display = 'none';
+            form.appendChild(honeyPot);
+            
+            status.textContent = 'Sending your message...';
+            
+            // Submit the form
+            form.submit();
+            
+            // This will show after the redirect back to your page
+            status.textContent = 'Thank you! Your message has been sent.';
+            form.reset();
+        });
+
+        // Replace placeholder images with your actual images
+        window.addEventListener('load', function() {
+            // Replace these with your actual image paths
+            const images = {
+                profilePic: 'imagesprofile-pic.jpg.jpg',
+                logoImg: 'imagesprofile-pic.jpg.jpg', // Same as profile for consistency
+                heroImg: 'hero-banner.jpg.jpg'
+            };
+            
+            for (const [id, src] of Object.entries(images)) {
+                const element = document.getElementById(id);
+                if (element) element.src = src;
+            }
+        });
+    </script>
+</body>
+</html>
